@@ -2,7 +2,7 @@
 This program contains functions for performing Natural Language Processing (NLP).
 """
 
-from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.sentiment import sentimentIntensityAnalyzer
 import nltk
 nltk.download('vader_lexicon')
 
@@ -16,15 +16,15 @@ def analyze_sentiment(text):
     Returns:
     tuple: A tuple containing the sentiment scores dictionary and the overall sentiment as a string.
     """
-    SIA = SentimentIntensityAnalyzer()
-    sentiment_scores = SIA.polarity_scores(text)
+    sia = sentimentIntensityAnalyzer()
+    sentiment_scores = sia.polarity_scores(text)
     if sentiment_scores['compound'] >= 0.05:
-        SENTIMENT = "Positive"
+        sentiment = "Positive"
     elif sentiment_scores['compound'] <= -0.05:
-        SENTIMENT = "Negative"
+        sentiment = "Negative"
     else:
-        SENTIMENT = "Neutral"
+        sentiment = "Neutral"
     print(f"Text: {text}")
-    print(f"Sentiment Scores: {sentiment_scores}")
-    print(f"Overall Sentiment: {SENTIMENT}")
-    return sentiment_scores, SENTIMENT
+    print(f"sentiment Scores: {sentiment_scores}")
+    print(f"Overall sentiment: {sentiment}")
+    return sentiment_scores, sentiment

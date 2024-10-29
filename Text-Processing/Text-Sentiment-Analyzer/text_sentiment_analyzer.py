@@ -17,14 +17,14 @@ def analyze_sentiment(text):
     tuple: A tuple containing the sentiment scores dictionary and the overall sentiment as a string.
     """
     SIA = SentimentIntensityAnalyzer()
-    SENTIMENT_SCORES = SIA.polarity_scores(text)
-    if SENTIMENT_SCORES['compound'] >= 0.05:
+    sentiment_scores = SIA.polarity_scores(text)
+    if sentiment_scores['compound'] >= 0.05:
         SENTIMENT = "Positive"
-    elif SENTIMENT_SCORES['compound'] <= -0.05:
+    elif sentiment_scores['compound'] <= -0.05:
         SENTIMENT = "Negative"
     else:
         SENTIMENT = "Neutral"
     print(f"Text: {text}")
-    print(f"Sentiment Scores: {SENTIMENT_SCORES}")
+    print(f"Sentiment Scores: {sentiment_scores}")
     print(f"Overall Sentiment: {SENTIMENT}")
-    return SENTIMENT_SCORES, SENTIMENT
+    return sentiment_scores, SENTIMENT

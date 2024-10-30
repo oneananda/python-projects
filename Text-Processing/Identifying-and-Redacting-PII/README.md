@@ -8,6 +8,8 @@ This Python script identifies and redacts Personally Identifiable Information (P
   - **Email Addresses**
   - **Phone Numbers** (formats with or without country codes)
   - **Social Security Numbers** (SSNs)
+  - **Credit Card Numbers**
+  - **Dates of Birth (DOB)**
 - Customizable to add or modify patterns for different types of PII.
 
 ## Requirements

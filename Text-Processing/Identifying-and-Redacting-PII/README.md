@@ -23,6 +23,6 @@ No additional libraries are required, as this script uses only Python's built-in
 1. **Clone the Repository** (if applicable):
 
    ```bash
-   git clone https://github.com/yourusername/pii-redaction.git
-   cd pii-redaction
+   git clone https://github.com/oneananda/python-projects.git
+   cd python-projects
    ```

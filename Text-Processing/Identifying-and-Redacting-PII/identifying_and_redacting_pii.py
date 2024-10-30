@@ -3,3 +3,6 @@ This program contains functions which identifies and redacts Personally Identifi
 """
 
 import re
+
+def redact_pii(text):
+  return text

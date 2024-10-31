@@ -8,7 +8,8 @@ import argparse
 import os
 import uuid
 
-# INP_PATH = sys.argv[1]
+TEXT_FILE_EXTENSION = '.txt'
+
 PARSER = argparse.ArgumentParser(description="PII Redacting parameters!")
 PARSER.add_argument("INP_PATH",type=str,help="Path of the text file")
 
@@ -37,7 +38,7 @@ def redact_pii(given_path):
 
     content = process_content(content)
 
-    random_file_name = file_name.replace(".txt",'') +'_'+ str(uuid.uuid4())[0:7]+'.txt'
+    random_file_name = file_name.replace(TEXT_FILE_EXTENSION,'') +'_'+ str(uuid.uuid4())[0:7] + TEXT_FILE_EXTENSION
     new_file_path = os.path.join(path, random_file_name)
     with open(new_file_path, "w", encoding="utf-8") as file:
         file.write(content)

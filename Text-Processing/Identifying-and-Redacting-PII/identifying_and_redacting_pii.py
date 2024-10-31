@@ -26,7 +26,7 @@ def redact_pii(given_path):
 
     try:
         with open(given_path, "r", encoding="utf-8") as file:
-          content = file.read()
+            content = file.read()
     # Process the content as needed
     except FileNotFoundError:
         print(f"The file at {given_path} was not found.")

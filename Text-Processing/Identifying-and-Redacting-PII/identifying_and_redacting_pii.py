@@ -12,9 +12,11 @@ PARSER.add_argument("INP_PATH",type=str,help="Path of the text file")
 ARGS = PARSER.parse_args() 
 
 def redact_pii(given_path):
+EMAIL_PATTERN = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
   with open(given_path,'r') as file:
-    content = file.read()
-    print(content)
-  return content
+    CONTENT = file.read()
+    CONTENT = re.sub(EMAIL_PATTERN, '[REDACTED EMAIL]', CONTENT)
+    print(CONTENT)
+  return CONTENT
 
 redact_pii(ARGS.INP_PATH)

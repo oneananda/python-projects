@@ -43,6 +43,7 @@ def redact_pii(given_path):
     new_file_path = os.path.join(path, random_file_name)
     with open(new_file_path, "w", encoding="utf-8") as file:
         file.write(content)
+    print(f"Redacted file saved at {new_file_path}")
     return content
 
 def process_content(content):

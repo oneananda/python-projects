@@ -28,7 +28,5 @@ def redact_pii(given_path):
 	with open(PATH +'\\' + RANDOM_FILE_NAME, 'w') as file :
 	    file.write(CONTENT)
 	# print(RANDOM_FILE_NAME)
-
-    return CONTENT
-	
+    return CONTENT	
 redact_pii(ARGS.INP_PATH)

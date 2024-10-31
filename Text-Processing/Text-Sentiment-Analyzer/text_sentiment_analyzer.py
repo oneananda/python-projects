@@ -32,5 +32,5 @@ def analyze_sentiment(text):
 # text = "I'm so happy with this product! It's amazing and works perfectly."
 TEXT = "I'm not happy with this product! It's not amazing and works imperfectly."
 SENTIMENT_SCORES, SENTIMENT = analyze_sentiment(TEXT)
-print(sentiment_scores)
-print(sentiment)
+print(SENTIMENT_SCORES)
+print(SENTIMENT)

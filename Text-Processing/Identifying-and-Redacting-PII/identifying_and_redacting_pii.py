@@ -25,7 +25,7 @@ def redact_pii(given_path):
 	CONTENT = re.sub(EMAIL_PATTERN, '[REDACTED EMAIL]', CONTENT)
 	RANDOM_FILE_NAME = FILE_NAME.replace(".txt",'') +'_'+ str(uuid.uuid4())[0:7]+'.txt'
 
-	with open(PATH +'\\' + RANDOM_FILE_NAME, 'w') as file :
+	with open(PATH +'\\' + RANDOM_FILE_NAME, 'w') as file:
 	    file.write(CONTENT)
 	# print(RANDOM_FILE_NAME)
     return CONTENT

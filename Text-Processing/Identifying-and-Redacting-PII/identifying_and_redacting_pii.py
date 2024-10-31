@@ -12,7 +12,7 @@ PARSER.add_argument("INP_PATH",type=str,help="Path of the text file")
 
 ARGS = PARSER.parse_args()
 
-def redact_pii(given_path):    
+def redact_pii(given_path):
 	PATH, FILE_NAME = os.path.split(given_path)
 
 	# print("Path:", PATH)       
@@ -30,5 +30,5 @@ def redact_pii(given_path):
 	# print(RANDOM_FILE_NAME)
 
     return CONTENT
-
+	
 redact_pii(ARGS.INP_PATH)

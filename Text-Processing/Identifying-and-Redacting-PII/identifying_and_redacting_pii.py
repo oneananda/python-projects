@@ -16,8 +16,7 @@ def redact_pii(given_path):
 	PATH, FILE_NAME = os.path.split(given_path)
 
 	# print("Path:", PATH)       
-	# print("Filename:", FILE_NAME)
-	
+	# print("Filename:", FILE_NAME)	
 	EMAIL_PATTERN = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
 	
 	with open(given_path,'r') as file:

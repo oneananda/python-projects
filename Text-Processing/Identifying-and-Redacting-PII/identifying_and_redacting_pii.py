@@ -21,12 +21,12 @@ def redact_pii(given_path):
 	EMAIL_PATTERN = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
 	
 	with open(given_path,'r') as file:
-	CONTENT = file.read()
+	    CONTENT = file.read()
 	CONTENT = re.sub(EMAIL_PATTERN, '[REDACTED EMAIL]', CONTENT)
 	RANDOM_FILE_NAME = FILE_NAME.replace(".txt",'') +'_'+ str(uuid.uuid4())[0:7]+'.txt'
 
 	with open(PATH +'\\' + RANDOM_FILE_NAME, 'w') as file :
-	file.write(CONTENT)
+	    file.write(CONTENT)
 	#print(RANDOM_FILE_NAME)
   return CONTENT
 

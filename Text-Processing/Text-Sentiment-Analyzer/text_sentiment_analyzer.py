@@ -30,7 +30,7 @@ def analyze_sentiment(text):
     return sentiment_scores, sentiment
 # Positive
 # text = "I'm so happy with this product! It's amazing and works perfectly."
-text = "I'm not happy with this product! It's not amazing and works imperfectly."
-sentiment_scores, sentiment = analyze_sentiment(text)
+TEXT = "I'm not happy with this product! It's not amazing and works imperfectly."
+SENTIMENT_SCORES, SENTIMENT = analyze_sentiment(TEXT)
 print(sentiment_scores)
 print(sentiment)

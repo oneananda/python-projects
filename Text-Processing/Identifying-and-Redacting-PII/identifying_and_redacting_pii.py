@@ -16,7 +16,7 @@ ARGS = PARSER.parse_args()
 
 def redact_pii(given_path):
     """
-    This program contains functions which identifies 
+    This function identifies 
     and redacts Personally Identifiable Information (PII).
     """
     path, file_name = os.path.split(given_path)
@@ -28,7 +28,7 @@ def redact_pii(given_path):
         content = file.read()
     content = re.sub(email_pattern, '[REDACTED EMAIL]', content)
     random_file_name = file_name.replace(".txt",'') +'_'+ str(uuid.uuid4())[0:7]+'.txt'
-    with open(path +'\\' + random_file_name, 'w', encoding="utf-8") as file:
+    with open(path +'\\' + random_file_name, "w", encoding="utf-8") as file:
         file.write(content)
     return content
 redact_pii(ARGS.INP_PATH)

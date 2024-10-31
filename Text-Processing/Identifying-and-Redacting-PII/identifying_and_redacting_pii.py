@@ -69,4 +69,9 @@ def process_content(content):
 
     return content
 
-redact_pii(ARGS.INP_PATH)
+def main():
+    """Main function to execute PII redaction based on input path."""
+    redact_pii(ARGS.INP_PATH)
+
+if __name__ == "__main__":
+    main()

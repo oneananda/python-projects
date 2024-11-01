@@ -12,6 +12,7 @@ TEXT_EXT = '.txt'
 
 PARSER = argparse.ArgumentParser(description="PII Redacting parameters!")
 PARSER.add_argument("INP_PATH",type=str,help="Path of the text file")
+PARSER.add_argument("REDACT_OR_MASK",type=str,help="Option to redacting or masking")
 
 ARGS = PARSER.parse_args()
 
@@ -50,7 +51,7 @@ def process_content(content):
     This function processes the content 
     and redacts Personally Identifiable Information (PII).
     """
-    patterns = {
+    redacting_patterns = {
         'EMAIL': r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}',
         'PHONE': r'\b(\+?\d{1,2})?\s?(\(?\d{3}\)?)?\s?-?\d{3}-?\d{4}\b',
         'SSN': r'\b\d{3}-\d{2}-\d{4}\b',
@@ -63,10 +64,29 @@ def process_content(content):
         'MAC_ADDRESS': r'\b([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})\b',
         'PHYSICAL_ADDRESS': r'\b\d+\s[A-Za-z]+(?:\s[A-Za-z]+)*\b'  # Basic pattern
     }
+    # Define patterns and corresponding masking functions
+    masking_patterns = {
+        'EMAIL': (r'([a-zA-Z0-9._%+-])([a-zA-Z0-9._%+-]*)(@[\w.-]+\.[a-zA-Z]{2,})', lambda m: m.group(1) + "****" + m.group(3)),
+        'PHONE': (r'\b(\+?\d{1,2})?[-.\s]?(\(?\d{3}\)?)?[-.\s]?(\d{3})[-.\s]?(\d{4})\b', lambda m: "***-***-" + m.group(4)),
+        'SSN': (r'\b(\d{3})-(\d{2})-(\d{4})\b', lambda m: "***-**-" + m.group(3)),
+        'CREDIT_CARD': (r'\b(\d{4})-?(\d{4})-?(\d{4})-?(\d{4})\b', lambda m: "****-****-****-" + m.group(4)),
+        'DATE_OF_BIRTH': (r'\b(\d{2})[/-](\d{2})[/-](\d{4})\b', lambda m: "****/**/" + m.group(3)),
+        'PASSPORT': (r'\b(\d{3})(\d{3})(\d{3})\b', lambda m: "***-***-" + m.group(3)),
+        'DRIVER_LICENSE': (r'\b([A-Z]{1,2})-\d{3,6}-\d{3,6}\b', lambda m: m.group(1) + "-***-***"),
+        'BANK_ACCOUNT': (r'\b\d{9,18}\b', lambda m: "****" + m.group(0)[-4:]),
+        'IP_ADDRESS': (r'\b(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\b', lambda m: "***.***.***." + m.group(4)),
+        'MAC_ADDRESS': (r'\b([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})\b', lambda m: "**:**:**:**:**:" + m.group(2)),
+        'PHYSICAL_ADDRESS': (r'\b(\d+)\s([A-Za-z]+(?:\s[A-Za-z]+)*)\b', lambda m: "*** " + m.group(2))
+    }
 
-    # Replace identified PII with a placeholder indicating the type of PII
-    for pii_type, pattern in patterns.items():
-        content = re.sub(pattern, f'[REDACTED {pii_type}]', content)
+    if ARGS.REDACT_OR_MASK == "Redact":
+        # Replace identified PII with a placeholder indicating the type of PII
+        for pii_type, pattern in redacting_patterns.items():
+            content = re.sub(pattern, f'[REDACTED {pii_type}]', content)
+    else:
+        # Mask it
+        for pii_type, (pattern, mask_func) in masking_patterns.items():
+            content = re.sub(pattern, mask_func, content)
 
     return content
 

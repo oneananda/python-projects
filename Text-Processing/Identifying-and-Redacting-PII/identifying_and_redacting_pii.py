@@ -66,7 +66,10 @@ def process_content(content):
     }
     # Define patterns and corresponding masking functions
     masking_patterns = {
-        'EMAIL': (r'([a-zA-Z0-9._%+-])([a-zA-Z0-9._%+-]*)(@[\w.-]+\.[a-zA-Z]{2,})', lambda m: m.group(1) + "****" + m.group(3)),
+        'EMAIL': (
+            r'([a-zA-Z0-9._%+-])([a-zA-Z0-9._%+-]*)(@[\w.-]+\.[a-zA-Z]{2,})', 
+            lambda m: m.group(1) + "****" + m.group(3)
+        ),
         'PHONE': (r'\b(\+?\d{1,2})?[-.\s]?(\(?\d{3}\)?)?[-.\s]?(\d{3})[-.\s]?(\d{4})\b', lambda m: "***-***-" + m.group(4)),
         'SSN': (r'\b(\d{3})-(\d{2})-(\d{4})\b', lambda m: "***-**-" + m.group(3)),
         'CREDIT_CARD': (r'\b(\d{4})-?(\d{4})-?(\d{4})-?(\d{4})\b', lambda m: "****-****-****-" + m.group(4)),

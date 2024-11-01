@@ -70,16 +70,46 @@ def process_content(content):
             r'([a-zA-Z0-9._%+-])([a-zA-Z0-9._%+-]*)(@[\w.-]+\.[a-zA-Z]{2,})', 
             lambda m: m.group(1) + "****" + m.group(3)
         ),
-        'PHONE': (r'\b(\+?\d{1,2})?[-.\s]?(\(?\d{3}\)?)?[-.\s]?(\d{3})[-.\s]?(\d{4})\b', lambda m: "***-***-" + m.group(4)),
-        'SSN': (r'\b(\d{3})-(\d{2})-(\d{4})\b', lambda m: "***-**-" + m.group(3)),
-        'CREDIT_CARD': (r'\b(\d{4})-?(\d{4})-?(\d{4})-?(\d{4})\b', lambda m: "****-****-****-" + m.group(4)),
-        'DATE_OF_BIRTH': (r'\b(\d{2})[/-](\d{2})[/-](\d{4})\b', lambda m: "****/**/" + m.group(3)),
-        'PASSPORT': (r'\b(\d{3})(\d{3})(\d{3})\b', lambda m: "***-***-" + m.group(3)),
-        'DRIVER_LICENSE': (r'\b([A-Z]{1,2})-\d{3,6}-\d{3,6}\b', lambda m: m.group(1) + "-***-***"),
-        'BANK_ACCOUNT': (r'\b\d{9,18}\b', lambda m: "****" + m.group(0)[-4:]),
-        'IP_ADDRESS': (r'\b(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\b', lambda m: "***.***.***." + m.group(4)),
-        'MAC_ADDRESS': (r'\b([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})\b', lambda m: "**:**:**:**:**:" + m.group(2)),
-        'PHYSICAL_ADDRESS': (r'\b(\d+)\s([A-Za-z]+(?:\s[A-Za-z]+)*)\b', lambda m: "*** " + m.group(2))
+        'PHONE': (
+            r'\b(\+?\d{1,2})?[-.\s]?(\(?\d{3}\)?)?[-.\s]?(\d{3})[-.\s]?(\d{4})\b', 
+            lambda m: "***-***-" + m.group(4)
+        ),
+        'SSN': (
+            r'\b(\d{3})-(\d{2})-(\d{4})\b', 
+            lambda m: "***-**-" + m.group(3)
+        ),
+        'CREDIT_CARD': (
+            r'\b(\d{4})-?(\d{4})-?(\d{4})-?(\d{4})\b', 
+            lambda m: "****-****-****-" + m.group(4)
+        ),
+        'DATE_OF_BIRTH': (
+            r'\b(\d{2})[/-](\d{2})[/-](\d{4})\b', 
+            lambda m: "****/**/" + m.group(3)
+        ),
+        'PASSPORT': (
+            r'\b(\d{3})(\d{3})(\d{3})\b', 
+            lambda m: "***-***-" + m.group(3)
+        ),
+        'DRIVER_LICENSE': (
+            r'\b([A-Z]{1,2})-\d{3,6}-\d{3,6}\b', 
+            lambda m: m.group(1) + "-***-***"
+        ),
+        'BANK_ACCOUNT': (
+            r'\b\d{9,18}\b', 
+            lambda m: "****" + m.group(0)[-4:]
+        ),
+        'IP_ADDRESS': (
+            r'\b(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\b', 
+            lambda m: "***.***.***." + m.group(4)
+        ),
+        'MAC_ADDRESS': (
+            r'\b([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})\b', 
+            lambda m: "**:**:**:**:**:" + m.group(2)
+        ),
+        'PHYSICAL_ADDRESS': (
+            r'\b(\d+)\s([A-Za-z]+(?:\s[A-Za-z]+)*)\b', 
+            lambda m: "*** " + m.group(2)
+        )
     }
 
     if ARGS.REDACT_OR_MASK == "Redact":

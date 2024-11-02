@@ -21,8 +21,8 @@ ARGS = PARSER.parse_args()
 
 REDACT_OR_MASK = ARGS.REDACT_OR_MASK if ARGS.REDACT_OR_MASK in ["Redact", "Mask"] else "Redact"
 
-with open('config.yaml', 'r', encoding="utf-8") as file:
-    config = yaml.safe_load(file)
+with open('config.yaml', 'r', encoding="utf-8") as logfile:
+    config = yaml.safe_load(logfile)
 
 LOG_DIR = config['logging']['log_dir']
 
@@ -47,9 +47,9 @@ def redact_pii(given_path):
     content = ""
 
     try:
-        with open(given_path, "r", encoding="utf-8") as file:
+        with open(given_path, "r", encoding="utf-8") as orginal_file:
             logging.info(f"Opened file {given_path} for reading.")
-            content = file.read()
+            content = orginal_file.read()
     # Process the content as needed
     except FileNotFoundError:
         print(f"The file at {given_path} was not found.")
@@ -62,8 +62,8 @@ def redact_pii(given_path):
 
     random_file_name = file_name.replace(TEXT_EXT,'') +'_'+ str(uuid.uuid4())[0:7] + TEXT_EXT
     new_file_path = os.path.join(path, random_file_name)
-    with open(new_file_path, "w", encoding="utf-8") as file:
-        file.write(content)
+    with open(new_file_path, "w", encoding="utf-8") as processed_file:
+        processed_file.write(content)
     print(f"Redacted file saved at {new_file_path}")
     return content
 

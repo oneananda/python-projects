@@ -45,10 +45,11 @@ def redact_pii(given_path):
     # print("Path:", PATH)
     # print("Filename:", FILE_NAME)
     content = ""
+    file_stamp = str(uuid.uuid4())[0:7].upper()
 
     try:
         with open(given_path, "r", encoding="utf-8") as orginal_file:
-            logging.info("Opened file %s for reading.", given_path)
+            logging.info("Session Id: %s, opened file %s for reading.",file_stamp, given_path)
             logging.info("Process option : %s .", ARGS.REDACT_OR_MASK)
             content = orginal_file.read()
     # Process the content as needed
@@ -64,11 +65,12 @@ def redact_pii(given_path):
 
     content = process_content(content)
 
-    random_file_name = file_name.replace(TEXT_EXT,'') +'_'+ str(uuid.uuid4())[0:7] + TEXT_EXT
+    random_file_name = file_name.replace(TEXT_EXT,'') +'_'+ file_stamp + TEXT_EXT
     new_file_path = os.path.join(path, random_file_name)
     with open(new_file_path, "w", encoding="utf-8") as processed_file:
         processed_file.write(content)
-    print(f"Redacted file saved at {new_file_path}")
+    print(f"Process complete, file saved at {new_file_path}")
+    logging.info("Session Id: %s, process complete, file saved at %s.", file_stamp, new_file_path)
     return content
 
 def process_content(content):

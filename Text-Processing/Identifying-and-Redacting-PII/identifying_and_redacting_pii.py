@@ -63,7 +63,7 @@ def redact_pii(given_path):
         print(f"Could not decode the file at {given_path}. Check the file encoding.")
         logging.error("Could not decode the file at %s. Check the file encoding.", given_path)
 
-    content = process_content(content)
+    content = process_content(content, file_stamp)
 
     random_file_name = file_name.replace(TEXT_EXT,'') +'_'+ file_stamp + TEXT_EXT
     new_file_path = os.path.join(path, random_file_name)
@@ -73,7 +73,7 @@ def redact_pii(given_path):
     logging.info("Session Id: %s, process complete, file saved at %s.", file_stamp, new_file_path)
     return content
 
-def process_content(content):
+def process_content(content, file_stamp):
     """
     This function processes the content 
     and redacts Personally Identifiable Information (PII).
@@ -138,17 +138,29 @@ def process_content(content):
             lambda m: "*** " + m.group(2)
         )
     }
+    
 
     if ARGS.REDACT_OR_MASK == "Redact":
         # Replace identified PII with a placeholder indicating the type of PII
         for pii_type, pattern in redacting_patterns.items():
-            content = re.sub(pattern, f'[REDACTED {pii_type}]', content)
+            content = re.sub(pattern, process_and_log(pii_type, file_stamp), content)
     else:
         # Mask it
         for pii_type, (pattern, mask_func) in masking_patterns.items():
             content = re.sub(pattern, mask_func, content)
 
     return content
+
+def process_and_log(pii_type, file_stamp):
+    """
+    Returns a function that logs the redaction and replaces the match with a placeholder.
+    """
+    def replace(match):
+        # Log the PII type being redacted with the session ID
+        logging.info("Session Id: %s, redacting PII type: %s.", file_stamp, pii_type)
+        return f'[REDACTED {pii_type}]'
+    return replace
+
 
 def main():
     """

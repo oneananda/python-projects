@@ -7,6 +7,9 @@ import re
 import argparse
 import os
 import uuid
+import logging
+from datetime import datetime 
+
 
 TEXT_EXT = '.txt'
 
@@ -15,6 +18,10 @@ PARSER.add_argument("INP_PATH",type=str,help="Path of the text file")
 PARSER.add_argument("REDACT_OR_MASK",type=str,help="Option to redacting or masking")
 
 ARGS = PARSER.parse_args()
+
+REDACT_OR_MASK = ARGS.REDACT_OR_MASK if ARGS.REDACT_OR_MASK in ["Redact", "Mask"] else "Redact"
+
+LOG_FILE = f"pii_process_{datetime.now().strftime('%Y-%m-%d')}.log"
 
 def redact_pii(given_path):
     """

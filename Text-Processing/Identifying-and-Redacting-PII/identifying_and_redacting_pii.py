@@ -7,7 +7,7 @@ import re
 import argparse
 import os
 import uuid
-# import logging
+import logging
 from datetime import datetime
 
 TEXT_EXT = '.txt'
@@ -20,7 +20,17 @@ ARGS = PARSER.parse_args()
 
 REDACT_OR_MASK = ARGS.REDACT_OR_MASK if ARGS.REDACT_OR_MASK in ["Redact", "Mask"] else "Redact"
 
-LOG_FILE = f"pii_process_{datetime.now().strftime('%Y-%m-%d')}.log"
+LOG_DIR = "C:\\Logs"
+
+os.makedirs(LOG_DIR, exist_ok=True)
+
+LOG_FILE = os.path.join(LOG_DIR, f"pii_process_{datetime.now().strftime('%Y-%m-%d')}.log")
+
+logging.basicConfig(
+filename = LOG_FILE,
+level= logging.INFO,
+format= '%(asctime)s - %(levelname)s- %(message)s'
+)
 
 def redact_pii(given_path):
     """
@@ -34,6 +44,7 @@ def redact_pii(given_path):
 
     try:
         with open(given_path, "r", encoding="utf-8") as file:
+            logging.info(f"Opened file {given_path} for reading.")
             content = file.read()
     # Process the content as needed
     except FileNotFoundError:

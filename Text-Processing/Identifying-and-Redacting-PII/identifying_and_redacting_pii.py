@@ -9,6 +9,7 @@ import os
 import uuid
 import logging
 from datetime import datetime
+import yaml
 
 TEXT_EXT = '.txt'
 
@@ -20,7 +21,10 @@ ARGS = PARSER.parse_args()
 
 REDACT_OR_MASK = ARGS.REDACT_OR_MASK if ARGS.REDACT_OR_MASK in ["Redact", "Mask"] else "Redact"
 
-LOG_DIR = "C:\\Logs"
+with open('config.yaml', 'r', encoding="utf-8") as file:
+    config = yaml.safe_load(file)
+
+LOG_DIR = config['logging']['log_dir']
 
 os.makedirs(LOG_DIR, exist_ok=True)
 

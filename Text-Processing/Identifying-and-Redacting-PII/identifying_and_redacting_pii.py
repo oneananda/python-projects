@@ -36,6 +36,8 @@ level= logging.INFO,
 format= '%(asctime)s - %(levelname)s- %(message)s'
 )
 
+# Dictionary to store the count of redactions for each PII type
+
 def redact_pii(given_path):
     """
     This function identifies 
@@ -139,25 +141,35 @@ def process_content(content, file_stamp):
         )
     }
     
+    # Dictionary to store the count of redactions for each PII type
+    redaction_count = {pii_type: 0 for pii_type in redacting_patterns.keys()}
+
 
     if ARGS.REDACT_OR_MASK == "Redact":
         # Replace identified PII with a placeholder indicating the type of PII
         for pii_type, pattern in redacting_patterns.items():
-            content = re.sub(pattern, process_and_log(pii_type, file_stamp), content)
+            content = re.sub(pattern, process_and_log(pii_type, file_stamp, redaction_count), content)
     else:
         # Mask it
         for pii_type, (pattern, mask_func) in masking_patterns.items():
             content = re.sub(pattern, mask_func, content)
 
+    # Print or log the counts of each PII type redacted
+    for pii_type, count in redaction_count.items():
+        logging.info("Total redactions for PII type %s: %d", pii_type, count)
+        print(f"Total redactions for PII type {pii_type}: {count}")            
+
     return content
 
-def process_and_log(pii_type, file_stamp):
+def process_and_log(pii_type, file_stamp, redaction_count):
     """
     Returns a function that logs the redaction and replaces the match with a placeholder.
     """
     def replace(match):
         # Log the PII type being redacted with the session ID
         logging.info("Session Id: %s, redacting PII type: %s.", file_stamp, pii_type)
+        # Increment the count for the current PII type
+        redaction_count[pii_type] += 1
         return f'[REDACTED {pii_type}]'
     return replace
 

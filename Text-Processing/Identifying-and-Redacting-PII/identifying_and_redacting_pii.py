@@ -48,7 +48,7 @@ def redact_pii(given_path):
 
     try:
         with open(given_path, "r", encoding="utf-8") as orginal_file:
-            logging.info("%Opened file %s for reading.", given_path)
+            logging.info("Opened file %s for reading.", given_path)
             content = orginal_file.read()
     # Process the content as needed
     except FileNotFoundError:

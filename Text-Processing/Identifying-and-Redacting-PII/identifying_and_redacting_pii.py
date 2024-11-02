@@ -49,14 +49,18 @@ def redact_pii(given_path):
     try:
         with open(given_path, "r", encoding="utf-8") as orginal_file:
             logging.info("Opened file %s for reading.", given_path)
+            logging.info("Process option : %s .", ARGS.REDACT_OR_MASK)
             content = orginal_file.read()
     # Process the content as needed
     except FileNotFoundError:
         print(f"The file at {given_path} was not found.")
+        logging.error("The file at %s was not found.", given_path)
     except PermissionError:
         print(f"Permission denied for accessing the file at {given_path}.")
+        logging.error("Permission denied for accessing the file at %s.", given_path)
     except UnicodeDecodeError:
         print(f"Could not decode the file at {given_path}. Check the file encoding.")
+        logging.error("Could not decode the file at %s. Check the file encoding.", given_path)
 
     content = process_content(content)
 
@@ -145,7 +149,9 @@ def process_content(content):
     return content
 
 def main():
-    """Main function to execute PII redaction based on input path."""
+    """
+    Main function to execute PII redaction based on input path.
+    """
     redact_pii(ARGS.INP_PATH)
 
 if __name__ == "__main__":

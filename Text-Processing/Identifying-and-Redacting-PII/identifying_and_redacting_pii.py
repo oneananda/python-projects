@@ -80,19 +80,7 @@ def process_content(content, file_stamp):
     This function processes the content 
     and redacts Personally Identifiable Information (PII).
     """
-    redacting_patterns = {
-        'EMAIL': r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}',
-        'PHONE': r'\b(\+?\d{1,2})?\s?(\(?\d{3}\)?)?\s?-?\d{3}-?\d{4}\b',
-        'SSN': r'\b\d{3}-\d{2}-\d{4}\b',
-        'CREDIT_CARD': r'\b(?:\d{4}-?){3}\d{4}\b',
-        'DATE_OF_BIRTH': r'\b\d{2}[/-]\d{2}[/-]\d{4}\b',
-        'PASSPORT': r'\b[0-9]{9}\b',  # Example for U.S. passport numbers
-        'DRIVER_LICENSE': r'\b[A-Z]{1,2}-\d{3,6}-\d{3,6}\b',
-        'BANK_ACCOUNT': r'\b\d{9,18}\b',
-        'IP_ADDRESS': r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',
-        'MAC_ADDRESS': r'\b([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})\b',
-        'PHYSICAL_ADDRESS': r'\b\d+\s[A-Za-z]+(?:\s[A-Za-z]+)*\b'  # Basic pattern
-    }
+    redacting_patterns = config['patterns']['redacting_patterns']
     # Define patterns and corresponding masking functions
     masking_patterns = {
         'EMAIL': (

@@ -172,7 +172,7 @@ def redact_and_log(pii_type, file_stamp, redaction_count):
     """
     Returns a function that logs the redaction and replaces the match with a placeholder.
     """
-    def replace(match):
+    def replace(_):
         # Log the PII type being redacted with the session ID
         logging.info("Session Id: %s, redacting PII type: %s.", file_stamp, pii_type)
         # Increment the count for the current PII type

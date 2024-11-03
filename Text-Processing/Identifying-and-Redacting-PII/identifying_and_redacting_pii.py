@@ -154,7 +154,9 @@ def process_content(content, file_stamp):
     else:
         # Mask it
         for pii_type, (pattern, mask_func) in masking_patterns.items():
-            content = re.sub(pattern, mask_func, content)
+            content = re.sub(pattern,
+            mask_and_log(pii_type, file_stamp,
+            masking_count, mask_func), content)
 
     if ARGS.REDACT_OR_MASK == "Redact":
         # Print or log the counts of each PII type redacted
@@ -180,6 +182,17 @@ def redact_and_log(pii_type, file_stamp, redaction_count):
         return f'[REDACTED {pii_type}]'
     return replace
 
+def mask_and_log(pii_type, file_stamp, masking_count, mask_func):
+    """
+    Returns a function that logs the masking the match with a placeholder.
+    """
+    def wrapper(match):
+        # Log the PII type being redacted with the session ID
+        logging.info("Session Id: %s, masking PII type: %s.", file_stamp, pii_type)
+        # Increment the count for the current PII type
+        masking_count[pii_type] += 1
+        return mask_func(match)
+    return wrapper
 
 def main():
     """

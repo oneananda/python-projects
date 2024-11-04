@@ -11,11 +11,14 @@ import logging
 from datetime import datetime
 import yaml
 from masking_functions import mask_function_mapping  # Import the mapping and functions
+import asyncio
+from aiofiles import open as aio_open
 
 TEXT_EXT = '.txt'
 
 PARSER = argparse.ArgumentParser(description="PII Redacting parameters!")
-PARSER.add_argument("INP_PATH",type=str,help="Path of the text file")
+PARSER.add_argument("INP_PATH",type=str,help="Path of the folder / text file")
+PARSER.add_argument("INP_PATH_TYPE",type=str,help="folder / text file")
 PARSER.add_argument("REDACT_OR_MASK",type=str,help="Option to redacting or masking")
 
 ARGS = PARSER.parse_args()
@@ -39,7 +42,7 @@ format= '%(asctime)s - %(levelname)s- %(message)s'
 
 # Dictionary to store the count of redactions for each PII type
 
-def redact_pii(given_path):
+async def redact_pii(given_path):
     """
     This function identifies 
     and redacts Personally Identifiable Information (PII).
@@ -54,6 +57,7 @@ def redact_pii(given_path):
         with open(given_path, "r", encoding="utf-8") as orginal_file:
             logging.info("Session Id: %s, opened file %s for reading.",file_stamp, given_path)
             logging.info("Process option : %s .", ARGS.REDACT_OR_MASK)
+            # for line in orginal_file:
             content = orginal_file.read()
     # Process the content as needed
     except FileNotFoundError:
@@ -154,7 +158,23 @@ def main():
     """
     Main function to execute PII redaction based on input path.
     """
-    redact_pii(ARGS.INP_PATH)
+    if ARGS.INP_PATH_TYPE == "File":
+        redact_pii(ARGS.INP_PATH)
+    else:
+        asyncio.run(process_folder(ARGS.INP_PATH))
+
+async def process_folder(folder_path):
+    """
+    Function to execute PII redaction based on input path.
+    """
+    tasks = []
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.txt'):
+                file_path = os.path.join(root, file)
+                tasks.append(redact_pii(file_path))
+    # Run all tasks concurrently
+    await asyncio.gather(*tasks)
 
 if __name__ == "__main__":
     main()

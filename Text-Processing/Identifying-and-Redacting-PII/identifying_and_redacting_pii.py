@@ -10,6 +10,7 @@ import uuid
 import logging
 from datetime import datetime
 import yaml
+from masking_functions import mask_function_mapping  # Import the mapping and functions
 
 TEXT_EXT = '.txt'
 
@@ -90,6 +91,10 @@ def process_content(content, file_stamp):
         # Compile the pattern and convert the mask function from string to lambda
         pattern = re.compile(details['pattern'])
         mask_func = eval(details['mask_function'])  # Caution: Only use `eval` with trusted sources
+        # Safely map function name to actual function
+        # print(details['mask_function'])
+        # mask_func = details['mask_function']
+        # mask_func = mask_function_mapping[details['mask_function']]
         masking_patterns[pii_type] = (pattern, mask_func)
 
     # Dictionary to store the count of redactions for each PII type
